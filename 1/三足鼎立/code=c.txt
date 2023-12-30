@@ -1,0 +1,58 @@
+ 
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+int cmp(const void *a,const void *b){
+	return *(int *)a-*(int *)b;
+}
+int main() 
+{
+	long long n,p,y,i,h,sum=0;
+	scanf("%lld %lld",&n,&p);
+	y=n+1;//方便从1开始标记 
+	long long a[y];
+	a[0]=0;
+	for(i=1;i<=n;i++)
+	scanf("%lld",&a[i]);
+	//排序（升序） 
+	qsort(a,y,sizeof(long long),cmp);
+	//开始用二分法
+	long long left,right;
+	long long m;//存中间位的下标
+	long long num1,num2;//存每次大于最小值的边界下标和每次小于最大值的边界下标 
+	for(i=1;i<=n;i++){
+		left=i+1;
+		right=n;
+		long long max,min;//每次要满足的a[x]<max(两边之和),a[x]>min(两边这差)
+		 max=a[i]+p;
+		 min=fabs(a[i]-p);
+		 //接下来确定大于最小值的边界
+		 while(left<=right){//这个一般都是作位二分查找的循环条件 
+		 	m=(right+left)/2;//每次它都会变一定要放在里面,注意中间下标是加号不是减号！！！
+			//找左位关键是a[m]小于min即min在a[m]和right之间才会移动左位 
+			//在这里右位不是关键 
+			 if(a[m]<=min){
+			 	left=m+1;
+			 } else{
+			 	right=m-1;
+			 }
+		 } 
+		 num1=left;
+		 left=i+1;
+		 right=n; 
+		 //找小于最大值的边界的小标
+		 while(left<=right){
+		 	m=(right+left)/2;
+		 	if(a[m]>=max){
+		 		right=m-1;
+			 } else{
+			 	left=m+1;
+			 }
+		 }
+		 num2=right;
+		h=(num2-num1)+1;//h只是一次循环的情况
+		sum=sum+h;//sum是总和
+	} 
+	printf("%lld",sum);
+	return 0;
+}

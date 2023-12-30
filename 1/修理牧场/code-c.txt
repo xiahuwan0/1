@@ -1,0 +1,32 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MaxSize 100000
+int L[MaxSize];
+int N;
+int df(int x) {//返回x+1~n-1之间最小的值,并与L[x]交换
+	int p = x;
+	for (int i =x+1; i < N; i++ ) {
+		if(L[i]<L[p]) 
+		p=i;
+	}
+	if(p!=x){
+		int t=L[p];
+		L[p]=L[x];
+		L[x]=t;
+	}
+	return L[x];
+}
+int main() {
+	scanf("%d", &N); //要锯成N块
+	for (int i = 0; i < N; i++) {
+		scanf("%d", &L[i]);
+	}
+	int cost = 0;
+	for (int i = 0; i < N - 1; i++ ) {
+		cost += df(i) + df(i + 1);
+		L[i+1]+=L[i];//i之前的数据都已经用过
+	}
+	printf("%d", cost);
+	return 0;
+}
+

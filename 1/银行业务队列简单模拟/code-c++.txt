@@ -1,0 +1,36 @@
+#include<iostream>
+#include<queue>
+using namespace std;
+int main()
+{
+	queue<int> a, b;
+	int n, t;
+	cin >> n;//顾客数
+	for (int i = 0; i < n; i++)
+	{
+		cin >> t;
+		if (t % 2 == 1)//奇数去a窗口
+			a.push(t);
+		else//偶数去b窗口
+			b.push(t);
+	}
+	int flag = 2;//默认a窗口有两位可以输出
+	while (!a.empty() || !b.empty())//两个窗口都不空
+	{
+		n--;
+		if ((flag == 1 || flag == 2) && !a.empty())//flag不等于0且a窗口不空
+		{
+			cout << a.front();
+			a.pop();
+			flag--;
+		}
+		else
+		{
+			cout << b.front();
+			b.pop();
+			flag = 2;//b窗口处理一个以后换成a窗口
+		}
+		if (n != 0)
+			cout << " ";
+	}
+}
